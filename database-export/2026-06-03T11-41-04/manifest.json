@@ -1,0 +1,47 @@
+{
+  "exportedAt": "2026-06-03T11:41:04.479Z",
+  "connection": {
+    "host": "localhost",
+    "port": "5433",
+    "user": "postgres",
+    "databases": [
+      "fems_auth",
+      "fems_customers",
+      "fems_extinguishers",
+      "fems_notifications",
+      "fems_renewals",
+      "fems_compliance",
+      "fems_inspections"
+    ]
+  },
+  "files": [
+    {
+      "database": "fems_auth",
+      "file": "fems_auth.schema.sql"
+    },
+    {
+      "database": "fems_customers",
+      "file": "fems_customers.schema.sql"
+    },
+    {
+      "database": "fems_extinguishers",
+      "file": "fems_extinguishers.schema.sql"
+    },
+    {
+      "database": "fems_notifications",
+      "file": "fems_notifications.schema.sql"
+    },
+    {
+      "database": "fems_renewals",
+      "file": "fems_renewals.schema.sql"
+    },
+    {
+      "database": "fems_compliance",
+      "file": "fems_compliance.schema.sql"
+    },
+    {
+      "database": "fems_inspections",
+      "file": "fems_inspections.schema.sql"
+    }
+  ]
+}

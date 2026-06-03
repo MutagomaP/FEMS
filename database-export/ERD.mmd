@@ -1,0 +1,149 @@
+%% FEMS — copy into Mermaid Live Editor: https://mermaid.live
+%% Logical cross-database view (database-per-service)
+
+erDiagram
+  USERS ||--o{ REFRESH_TOKENS : has
+  USERS ||--o{ PASSWORD_RESET_TOKENS : has
+  USERS ||--o{ AUDIT_LOGS : generates
+
+  CUSTOMERS ||--o{ FIRE_EXTINGUISHERS : owns
+  FIRE_EXTINGUISHERS ||--o{ INSPECTION_SCHEDULES : scheduled_for
+  FIRE_EXTINGUISHERS ||--o{ MAINTENANCE_LOGS : maintained
+  FIRE_EXTINGUISHERS ||--o{ NOTIFICATIONS : alerts
+  FIRE_EXTINGUISHERS ||--o{ RENEWAL_REQUESTS : renewals
+  FIRE_EXTINGUISHERS ||--o{ COMPLIANCE_CASES : cases
+  FIRE_EXTINGUISHERS ||--o{ EXTINGUISHER_AUDIT_LOGS : audited
+
+  CUSTOMERS ||--o{ INSPECTION_SCHEDULES : requests
+  CUSTOMERS ||--o{ NOTIFICATIONS : receives
+  CUSTOMERS ||--o{ RENEWAL_REQUESTS : submits
+  CUSTOMERS ||--o{ COMPLIANCE_CASES : subject
+
+  NOTIFICATIONS ||--o{ NOTIFICATION_DELIVERIES : delivers
+
+  USERS {
+    uuid id PK
+    string first_name
+    string last_name
+    string full_name
+    string email UK
+    enum role "ADMIN CUSTOMER INSPECTOR"
+    timestamptz created_at
+    timestamptz updated_at
+  }
+
+  REFRESH_TOKENS {
+    uuid id PK
+    uuid user_id FK
+    string token_hash
+    timestamptz expires_at
+    timestamptz revoked_at
+  }
+
+  PASSWORD_RESET_TOKENS {
+    uuid id PK
+    uuid user_id
+    string token_hash
+    timestamptz expires_at
+    timestamptz used_at
+  }
+
+  AUDIT_LOGS {
+    uuid id PK
+    uuid user_id
+    string action
+    string entity
+    uuid entity_id
+  }
+
+  CUSTOMERS {
+    uuid id PK
+    string full_name
+    string national_id
+    string phone
+    string email UK
+    text address
+  }
+
+  FIRE_EXTINGUISHERS {
+    uuid id PK
+    string serial_number UK
+    string location
+    enum type
+    enum size
+    date installation_date
+    date expiry_date
+    enum status "IN_STOCK ACTIVE EXPIRING_SOON EXPIRED RENEWED"
+    uuid customer_id "nullable"
+  }
+
+  EXTINGUISHER_AUDIT_LOGS {
+    uuid id PK
+    uuid user_id
+    string action
+    uuid entity_id
+    text details
+  }
+
+  INSPECTION_SCHEDULES {
+    uuid id PK
+    uuid extinguisher_id
+    uuid customer_id
+    uuid scheduled_by_user_id
+    uuid inspector_user_id "nullable"
+    date inspection_date
+    string inspection_time
+    enum status "PENDING COMPLETED OVERDUE CANCELLED"
+    text notes
+  }
+
+  MAINTENANCE_LOGS {
+    uuid id PK
+    uuid extinguisher_id
+    uuid inspector_user_id
+    string action_taken
+    date maintenance_date
+    text issues_identified
+    text notes
+    text recommendations
+  }
+
+  NOTIFICATIONS {
+    uuid id PK
+    uuid customer_id
+    uuid extinguisher_id
+    text message
+    enum type
+    enum channel "EMAIL SMS"
+    enum status
+  }
+
+  NOTIFICATION_DELIVERIES {
+    uuid id PK
+    uuid notification_id FK
+    enum channel
+    enum status "SENT DELIVERED FAILED"
+  }
+
+  SYSTEM_SETTINGS {
+    string key PK
+    jsonb value
+  }
+
+  RENEWAL_REQUESTS {
+    uuid id PK
+    uuid customer_id
+    uuid extinguisher_id
+    enum request_type
+    enum status
+    text description
+  }
+
+  COMPLIANCE_CASES {
+    uuid id PK
+    uuid customer_id
+    uuid extinguisher_id
+    enum case_status
+    timestamptz closed_at
+    text notes
+  }
