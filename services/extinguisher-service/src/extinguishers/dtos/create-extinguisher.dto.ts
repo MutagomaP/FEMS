@@ -50,6 +50,7 @@ export class CreateExtinguisherDto {
 
   @ApiProperty({ example: '2024-01-15' })
   @IsDateString()
+  @ValidateExtinguisherDates()
   installationDate: string;
 
   @ApiProperty({ example: '2026-01-15' })

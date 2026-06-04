@@ -39,11 +39,6 @@ export class ReportsController {
     return this.sendReport(await this.reportsService.customerCompliance(query), res);
   }
 
-  @Get('renewal-requests')
-  async renewalRequests(@Query() query: ReportQueryDto, @Res() res: Response) {
-    return this.sendReport(await this.reportsService.renewalRequests(query), res);
-  }
-
   @Get('notifications')
   async notifications(@Query() query: ReportQueryDto, @Res() res: Response) {
     return this.sendReport(await this.reportsService.notifications(query), res);

@@ -69,7 +69,7 @@ export function NotificationsPage() {
     <div className="page-container">
       <PageHeader
         title="Notifications"
-        description="View alerts about expiring extinguishers and renewal updates"
+        description="View alerts about expiring extinguishers and inspection activity"
       />
 
       {error && <p className="mb-3 text-sm text-ember-600">{error}</p>}

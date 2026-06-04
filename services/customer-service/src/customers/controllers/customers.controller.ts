@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Patch,
+  Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -21,6 +22,7 @@ import {
   RolesGuard,
   UserRole,
 } from '@fems/shared';
+import { CreateCustomerDto } from '../dtos/create-customer.dto';
 import { ListCustomersQueryDto } from '../dtos/list-customers-query.dto';
 import { UpdateCustomerDto } from '../dtos/update-customer.dto';
 import { CustomersService } from '../services/customers.service';
@@ -55,6 +57,13 @@ export class CustomersController {
       query.limit ?? 10,
       query.search,
     );
+  }
+
+  @Post()
+  @Roles(UserRole.ADMIN)
+  @ApiOperation({ summary: 'Create customer profile (admin)' })
+  create(@Body() dto: CreateCustomerDto) {
+    return this.customersService.create(dto);
   }
 
   @Get(':id')

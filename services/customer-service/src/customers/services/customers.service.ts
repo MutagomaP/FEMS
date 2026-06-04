@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { paginate, PaginatedResult } from '@fems/shared';
+import { AuthClient } from '../../clients/auth.client';
 import { Customer } from '../entities/customer.entity';
 import { CreateCustomerDto } from '../dtos/create-customer.dto';
 import { UpdateCustomerDto } from '../dtos/update-customer.dto';
@@ -11,7 +12,10 @@ import { CustomersRepository } from '../repositories/customers.repository';
 
 @Injectable()
 export class CustomersService {
-  constructor(private readonly customersRepo: CustomersRepository) {}
+  constructor(
+    private readonly customersRepo: CustomersRepository,
+    private readonly authClient: AuthClient,
+  ) {}
 
   async create(dto: CreateCustomerDto): Promise<Customer> {
     const email = dto.email.toLowerCase();
@@ -32,12 +36,22 @@ export class CustomersService {
     limit: number,
     search?: string,
   ): Promise<PaginatedResult<Customer>> {
+    await this.syncAuthCustomerProfiles();
     const [data, total] = await this.customersRepo.findPaginated(
       page,
       limit,
       search,
     );
     return paginate(data, total, page, limit);
+  }
+
+  private async syncAuthCustomerProfiles(): Promise<void> {
+    const authCustomers = await this.authClient.listCustomerUsers();
+    await Promise.all(
+      authCustomers.map((user) =>
+        this.ensureByEmail(user.email, user.fullName),
+      ),
+    );
   }
 
   async findById(id: string): Promise<Customer> {

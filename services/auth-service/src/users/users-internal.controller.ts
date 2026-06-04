@@ -14,6 +14,11 @@ export class UsersInternalController {
     return this.usersService.findAdmins();
   }
 
+  @Get('customers')
+  listCustomers() {
+    return this.usersService.findCustomers();
+  }
+
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.usersService.getProfile(id);

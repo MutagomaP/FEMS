@@ -147,10 +147,14 @@ export function validateDateNotPast(date: string, label: string): string | null 
 }
 
 /** Keep in sync with packages/shared/src/validation/extinguisher-dates.ts */
-export const EXTINGUISHER_MAX_YEAR = 2099;
+export const EXTINGUISHER_MAX_YEAR = 2026;
 export const EXTINGUISHER_MAX_DATE = `${EXTINGUISHER_MAX_YEAR}-12-31`;
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function invalidExtinguisherDateMessage(label: string): string {
+  return `Enter a valid ${label} (year cannot exceed ${EXTINGUISHER_MAX_YEAR})`;
+}
 
 function parseExtinguisherDate(value: string): Date | null {
   const trimmed = value?.trim();
@@ -159,6 +163,7 @@ function parseExtinguisherDate(value: string): Date | null {
   const year = Number(yearStr);
   const month = Number(monthStr);
   const day = Number(dayStr);
+  if (year > EXTINGUISHER_MAX_YEAR) return null;
   const date = new Date(year, month - 1, day);
   if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
     return null;
@@ -180,7 +185,7 @@ export function dayAfterIsoDate(isoDate: string): string | undefined {
 export function validateExtinguisherInstallationDate(date: string): string | null {
   if (!date?.trim()) return 'Installation date is required';
   if (!parseExtinguisherDate(date)) {
-    return 'Enter a valid installation date';
+    return invalidExtinguisherDateMessage('installation date');
   }
   return null;
 }
@@ -192,7 +197,7 @@ export function validateExtinguisherExpiryDate(
   if (!expiryDate?.trim()) return 'Expiry date is required';
   const expiry = parseExtinguisherDate(expiryDate);
   if (!expiry) {
-    return 'Enter a valid expiry date';
+    return invalidExtinguisherDateMessage('expiry date');
   }
   const install = parseExtinguisherDate(installationDate);
   if (!install) return null;

@@ -48,9 +48,10 @@ export class CreateStockExtinguisherDto {
 
   @ApiProperty({ example: '2024-01-15' })
   @IsDateString()
+  @ValidateExtinguisherDates()
   installationDate: string;
 
-  @ApiProperty({ example: '2027-01-15' })
+  @ApiProperty({ example: '2026-01-15' })
   @IsDateString()
   @ValidateExtinguisherDates()
   expiryDate: string;

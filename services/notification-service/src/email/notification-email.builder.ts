@@ -85,7 +85,7 @@ ${summaryLine}
 What you should do next
 -----------------------
 1. Sign in to FEMS: ${appUrl}
-2. Open "My Extinguishers" or "Renewals" and schedule renewal before the expiry date.
+2. Open "My Extinguishers" or "Inspections" and schedule service before the expiry date.
 3. Contact your site administrator if you need assistance or have already renewed this unit.
 
 If you have already completed renewal, please update the extinguisher record in FEMS so future reminders stop.
@@ -120,8 +120,8 @@ This is an automated message. Please do not reply directly to this email.`;
   <h3 style="margin:24px 0 8px;font-size:16px;">What you should do next</h3>
   <ol>
     <li>Sign in to <a href="${appUrl}">FEMS</a>.</li>
-    <li>Open <strong>My Extinguishers</strong> or <strong>Renewals</strong> and schedule renewal before the expiry date.</li>
-    <li>Contact your site administrator if you need help, or update FEMS if renewal is already complete.</li>
+    <li>Open <strong>My Extinguishers</strong> or <strong>Inspections</strong> and schedule service before the expiry date.</li>
+    <li>Contact your site administrator if you need help, or update FEMS if service is already complete.</li>
   </ol>
   <p>Kind regards,<br><strong>Fire Extinguisher Management System (FEMS)</strong></p>
   <hr style="border:none;border-top:1px solid #ddd;margin:24px 0;">

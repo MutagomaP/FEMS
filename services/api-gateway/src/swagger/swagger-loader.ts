@@ -8,7 +8,7 @@ import {
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-export const EXPECTED_SERVICES = 8;
+export const EXPECTED_SERVICES = 7;
 
 export interface ServiceOpenApiTarget {
   name: string;
@@ -31,10 +31,6 @@ export function getOpenApiServiceTargets(
     {
       name: 'notification',
       url: config.get('NOTIFICATION_SERVICE_URL', 'http://localhost:3004'),
-    },
-    {
-      name: 'renewal',
-      url: config.get('RENEWAL_SERVICE_URL', 'http://localhost:3005'),
     },
     {
       name: 'compliance',

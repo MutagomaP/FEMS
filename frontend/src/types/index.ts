@@ -122,24 +122,6 @@ export interface CreateMaintenancePayload {
   recommendations?: string;
 }
 
-export type RenewalRequestType = 'SERVICE' | 'REPLACEMENT' | 'INSPECTION';
-export type RenewalRequestStatus =
-  | 'PENDING'
-  | 'APPROVED'
-  | 'REJECTED'
-  | 'COMPLETED';
-
-export interface RenewalRequest {
-  id: string;
-  customerId: string | null;
-  extinguisherId: string;
-  requestType: RenewalRequestType;
-  status: RenewalRequestStatus;
-  description: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export type CaseStatus =
   | 'OPEN'
   | 'WARNING_SENT'
@@ -176,7 +158,6 @@ export interface DashboardSummary {
     expiredCount: number;
     expiringSoonCount: number;
     complianceIssues: number;
-    pendingRenewals: number;
     recentNotifications: number;
   };
   breakdown: {
@@ -193,7 +174,6 @@ export type ReportType =
   | 'expired-extinguishers'
   | 'expiring-soon'
   | 'customer-compliance'
-  | 'renewal-requests'
   | 'notifications'
   | 'inventory-summary'
   | 'inspections-pending'
@@ -236,12 +216,6 @@ export interface ExtinguisherFilters extends ListQuery {
   expiryTo?: string;
 }
 
-export interface RenewalFilters extends ListQuery {
-  status?: RenewalRequestStatus;
-  requestType?: RenewalRequestType;
-  customerId?: string;
-}
-
 export interface ComplianceFilters extends ListQuery {
   caseStatus?: CaseStatus;
   customerId?: string;
@@ -250,4 +224,24 @@ export interface ComplianceFilters extends ListQuery {
 export interface NotificationFilters extends ListQuery {
   status?: string;
   type?: string;
+}
+
+export interface AuditLog {
+  id: string;
+  userId: string | null;
+  userFullName: string | null;
+  userEmail: string | null;
+  action: string;
+  entity: string;
+  entityId: string | null;
+  createdAt: string;
+}
+
+export interface ExtinguisherAuditLog {
+  id: string;
+  userId: string | null;
+  action: string;
+  entityId: string;
+  details: string | null;
+  createdAt: string;
 }

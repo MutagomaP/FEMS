@@ -35,11 +35,6 @@ const reports: ReportConfig[] = [
     description: 'Compliance summary across customers',
   },
   {
-    type: 'renewal-requests',
-    title: 'Renewal Requests',
-    description: 'Pending and completed renewal activity',
-  },
-  {
     type: 'notifications',
     title: 'Notifications',
     description: 'Notification delivery history',

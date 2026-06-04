@@ -4,7 +4,6 @@ import { CustomerClient } from '../clients/customer.client';
 import { ExtinguisherClient } from '../clients/extinguisher.client';
 import { NotificationClient } from '../clients/notification.client';
 import { InspectionClient } from '../clients/inspection.client';
-import { RenewalClient } from '../clients/renewal.client';
 import { ReportQueryDto } from './dto/report-query.dto';
 import { frequencyToRows } from './export-row.util';
 import { ExportResult, ExportService } from './export.service';
@@ -17,7 +16,6 @@ export class ReportsService {
     private readonly customerClient: CustomerClient,
     private readonly notificationClient: NotificationClient,
     private readonly complianceClient: ComplianceClient,
-    private readonly renewalClient: RenewalClient,
     private readonly inspectionClient: InspectionClient,
     private readonly exportService: ExportService,
   ) {}
@@ -53,11 +51,6 @@ export class ReportsService {
   async customerCompliance(query: ReportQueryDto): Promise<ExportResult | Record<string, unknown>[]> {
     const rows = await this.complianceClient.getCases(this.internalListParams(query));
     return this.respond('customer-compliance', rows, query.format ?? ReportFormat.CSV);
-  }
-
-  async renewalRequests(query: ReportQueryDto): Promise<ExportResult | Record<string, unknown>[]> {
-    const rows = await this.renewalClient.getRenewalRequests(this.internalListParams(query));
-    return this.respond('renewal-requests', rows, query.format ?? ReportFormat.CSV);
   }
 
   async notifications(query: ReportQueryDto): Promise<ExportResult | Record<string, unknown>[]> {
@@ -182,11 +175,10 @@ export class ReportsService {
   ): Promise<ExportResult | Record<string, unknown>> {
     const params = this.params(query);
     const listParams = this.internalListParams(query);
-    const [expired, expiring, compliance, renewals, notifications] = await Promise.all([
+    const [expired, expiring, compliance, notifications] = await Promise.all([
       this.extinguisherClient.getExpired(params),
       this.extinguisherClient.getExpiringSoon(params),
       this.complianceClient.getCases(listParams),
-      this.renewalClient.getRenewalRequests(listParams),
       this.notificationClient.getNotifications(listParams),
     ]);
 
@@ -195,7 +187,6 @@ export class ReportsService {
         expiredCount: expired.length,
         expiringSoonCount: expiring.length,
         complianceIssues: compliance.length,
-        pendingRenewals: renewals.length,
         recentNotifications: notifications.length,
       },
       breakdown: {

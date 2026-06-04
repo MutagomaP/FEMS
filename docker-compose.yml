@@ -110,28 +110,6 @@ services:
     ports:
       - "3004:3004"
 
-  renewal-service:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.service
-      args:
-        SERVICE_NAME: renewal-service
-        SERVICE_PORT: 3005
-    environment:
-      PORT: 3005
-      NODE_ENV: development
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/fems_renewals
-      JWT_SECRET: fems-dev-jwt-secret-change-in-production
-      CORS_ORIGIN: http://localhost:5173
-      SERVICE_INTERNAL_KEY: dev-internal-service-key
-      CUSTOMER_SERVICE_URL: http://customer-service:3002
-      EXTINGUISHER_SERVICE_URL: http://extinguisher-service:3003
-    depends_on:
-      postgres:
-        condition: service_healthy
-    ports:
-      - "3005:3005"
-
   compliance-service:
     build:
       context: .
@@ -170,7 +148,6 @@ services:
       CUSTOMER_SERVICE_URL: http://customer-service:3002
       EXTINGUISHER_SERVICE_URL: http://extinguisher-service:3003
       NOTIFICATION_SERVICE_URL: http://notification-service:3004
-      RENEWAL_SERVICE_URL: http://renewal-service:3005
       COMPLIANCE_SERVICE_URL: http://compliance-service:3006
       INSPECTION_SERVICE_URL: http://inspection-maintenance-service:3008
     depends_on:
@@ -214,7 +191,6 @@ services:
       CUSTOMER_SERVICE_URL: http://customer-service:3002
       EXTINGUISHER_SERVICE_URL: http://extinguisher-service:3003
       NOTIFICATION_SERVICE_URL: http://notification-service:3004
-      RENEWAL_SERVICE_URL: http://renewal-service:3005
       COMPLIANCE_SERVICE_URL: http://compliance-service:3006
       REPORT_SERVICE_URL: http://report-service:3007
       INSPECTION_SERVICE_URL: http://inspection-maintenance-service:3008
@@ -223,7 +199,6 @@ services:
       - customer-service
       - extinguisher-service
       - notification-service
-      - renewal-service
       - compliance-service
       - report-service
       - inspection-maintenance-service

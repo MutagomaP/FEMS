@@ -104,17 +104,6 @@ The customer must own the extinguisher. On success, email notifications are sent
 | GET | /notifications/me | Customer | Own notifications |
 | PATCH | /notifications/:id/read | Customer | Mark as read |
 
-## Renewals
-
-| Method | Path | Role | Description |
-|--------|------|------|-------------|
-| GET | /renewals | Admin | All requests |
-| GET | /renewals/mine | Customer | Own requests |
-| POST | /renewals | Customer | Submit request |
-| PATCH | /renewals/:id/approve | Admin | Approve |
-| PATCH | /renewals/:id/reject | Admin | Reject |
-| PATCH | /renewals/:id/complete | Admin | Complete |
-
 ## Compliance
 
 | Method | Path | Role | Description |
@@ -129,7 +118,6 @@ The customer must own the extinguisher. On success, email notifications are sent
 | GET | /reports/expired-extinguishers | Admin | ?format=pdf\|xlsx\|csv |
 | GET | /reports/expiring-soon | Admin | ?format=pdf\|xlsx\|csv |
 | GET | /reports/customer-compliance | Admin | ?format=pdf\|xlsx\|csv |
-| GET | /reports/renewal-requests | Admin | ?format=pdf\|xlsx\|csv |
 | GET | /reports/notifications | Admin | ?format=pdf\|xlsx\|csv |
 | GET | /reports/dashboard-summary | Admin | JSON (default), or `?format=pdf\|xlsx\|csv` |
 

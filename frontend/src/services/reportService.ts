@@ -23,7 +23,6 @@ function normalizeDashboardSummary(body: unknown): DashboardSummary {
       expiredCount: 0,
       expiringSoonCount: 0,
       complianceIssues: 0,
-      pendingRenewals: 0,
       recentNotifications: 0,
     },
     breakdown: {

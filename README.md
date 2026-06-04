@@ -79,7 +79,6 @@ cp services/api-gateway/.env.example services/api-gateway/.env
 cp services/customer-service/.env.example services/customer-service/.env
 cp services/extinguisher-service/.env.example services/extinguisher-service/.env
 cp services/notification-service/.env.example services/notification-service/.env
-cp services/renewal-service/.env.example services/renewal-service/.env
 cp services/compliance-service/.env.example services/compliance-service/.env
 cp services/report-service/.env.example services/report-service/.env
 cp services/inspection-maintenance-service/.env.example services/inspection-maintenance-service/.env
@@ -94,7 +93,6 @@ Copy-Item services\api-gateway\.env.example services\api-gateway\.env
 Copy-Item services\customer-service\.env.example services\customer-service\.env
 Copy-Item services\extinguisher-service\.env.example services\extinguisher-service\.env
 Copy-Item services\notification-service\.env.example services\notification-service\.env
-Copy-Item services\renewal-service\.env.example services\renewal-service\.env
 Copy-Item services\compliance-service\.env.example services\compliance-service\.env
 Copy-Item services\report-service\.env.example services\report-service\.env
 Copy-Item services\inspection-maintenance-service\.env.example services\inspection-maintenance-service\.env
@@ -191,7 +189,6 @@ docker compose up --build
 | CRUD | `/api/customers` | Customer management |
 | CRUD | `/api/extinguishers` | Extinguisher management |
 | GET | `/api/notifications` | Notification center |
-| CRUD | `/api/renewals` | Renewal requests |
 | GET | `/api/compliance/cases` | Compliance cases |
 | GET | `/api/inspections` | Inspection scheduling |
 | GET | `/api/maintenance` | Maintenance logs |
@@ -202,9 +199,9 @@ Full documentation: http://localhost:3000/api/docs
 
 ## User Roles
 
-**Admin** — Full access: customers, extinguishers, notifications, renewals, compliance, reports, settings.
+**Admin** — Full access: customers, extinguishers, notifications, compliance, reports, settings.
 
-**Customer** — View own extinguishers, notifications, submit renewal requests.
+**Customer** — View own extinguishers and notifications, schedule inspections.
 
 ## Business Rules
 
@@ -223,7 +220,6 @@ Full documentation: http://localhost:3000/api/docs
 │   ├── customer-service/
 │   ├── extinguisher-service/
 │   ├── notification-service/
-│   ├── renewal-service/
 │   ├── compliance-service/
 │   ├── report-service/
 │   └── inspection-maintenance-service/

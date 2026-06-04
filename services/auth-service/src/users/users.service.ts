@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { paginate, PaginatedResult, UserRole } from '@fems/shared';
 import { Repository } from 'typeorm';
 import { RegisterDto } from '../auth/dto/register.dto';
+import { CustomerClient } from '../clients/customer.client';
 import { WelcomeEmailService } from '../mail/welcome-email.service';
 import { User } from '../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,6 +23,7 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepo: Repository<User>,
     private readonly welcomeEmailService: WelcomeEmailService,
+    private readonly customerClient: CustomerClient,
   ) {}
 
   static buildFullName(firstName: string, lastName: string): string {
@@ -74,9 +76,12 @@ export class UsersService {
       role: dto.role,
     });
     const saved = this.sanitize(await this.usersRepo.save(user));
+    if (dto.role === UserRole.CUSTOMER) {
+      await this.customerClient.ensureProfile(email, saved.fullName);
+    }
     void this.welcomeEmailService.sendAdminCreatedWelcome(
       email,
-      firstName,
+      saved.fullName,
       plainPassword,
       dto.role,
     );
@@ -115,6 +120,14 @@ export class UsersService {
   async findAdmins(): Promise<Omit<User, 'password'>[]> {
     const users = await this.usersRepo.find({
       where: { role: UserRole.ADMIN },
+      order: { fullName: 'ASC' },
+    });
+    return users.map((u) => this.sanitize(u));
+  }
+
+  async findCustomers(): Promise<Omit<User, 'password'>[]> {
+    const users = await this.usersRepo.find({
+      where: { role: UserRole.CUSTOMER },
       order: { fullName: 'ASC' },
     });
     return users.map((u) => this.sanitize(u));

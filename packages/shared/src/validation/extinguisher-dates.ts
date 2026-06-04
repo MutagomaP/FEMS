@@ -1,5 +1,5 @@
-/** Upper bound for HTML date inputs (installation / expiry pickers). */
-export const EXTINGUISHER_MAX_YEAR = 2099;
+/** Latest calendar year allowed for extinguisher installation and expiry dates. */
+export const EXTINGUISHER_MAX_YEAR = 2026;
 export const EXTINGUISHER_MAX_DATE = `${EXTINGUISHER_MAX_YEAR}-12-31`;
 
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -7,6 +7,10 @@ const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 export interface ExtinguisherDateErrors {
   installationDate?: string;
   expiryDate?: string;
+}
+
+function invalidDateMessage(label: string): string {
+  return `Enter a valid ${label} (year cannot exceed ${EXTINGUISHER_MAX_YEAR})`;
 }
 
 export function parseExtinguisherDate(
@@ -21,6 +25,10 @@ export function parseExtinguisherDate(
   const year = Number(yearStr);
   const month = Number(monthStr);
   const day = Number(dayStr);
+
+  if (year > EXTINGUISHER_MAX_YEAR) {
+    return null;
+  }
 
   const date = new Date(year, month - 1, day);
   if (
@@ -43,13 +51,13 @@ export function getExtinguisherDateErrors(
   if (!installationDate?.trim()) {
     errors.installationDate = 'Installation date is required';
   } else if (!parseExtinguisherDate(installationDate)) {
-    errors.installationDate = 'Enter a valid installation date';
+    errors.installationDate = invalidDateMessage('installation date');
   }
 
   if (!expiryDate?.trim()) {
     errors.expiryDate = 'Expiry date is required';
   } else if (!parseExtinguisherDate(expiryDate)) {
-    errors.expiryDate = 'Enter a valid expiry date';
+    errors.expiryDate = invalidDateMessage('expiry date');
   }
 
   if (errors.installationDate || errors.expiryDate) {

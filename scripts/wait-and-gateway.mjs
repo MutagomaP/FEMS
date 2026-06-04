@@ -1,5 +1,5 @@
 /**
- * Waits for microservice ports 3001–3008, then starts the API gateway.
+ * Waits for microservice ports 3001–3004, 3006–3008, then starts the API gateway.
  * Used by npm run dev:services so Swagger and /api/settings proxy work on first load.
  */
 import { spawn } from 'child_process';
@@ -7,13 +7,12 @@ import net from 'net';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const MICRO_PORTS = [3001, 3002, 3003, 3004, 3005, 3006, 3007, 3008];
+const MICRO_PORTS = [3001, 3002, 3003, 3004, 3006, 3007, 3008];
 const LABELS = {
   3001: 'auth',
   3002: 'customer',
   3003: 'extinguisher',
   3004: 'notification',
-  3005: 'renewal',
   3006: 'compliance',
   3007: 'report',
   3008: 'inspection',
@@ -44,7 +43,7 @@ function isPortOpen(port) {
 
 async function waitForMicroservices() {
   const start = Date.now();
-  console.log('[gateway-wait] Waiting for microservices on ports 3001–3008...');
+  console.log('[gateway-wait] Waiting for microservices on ports 3001–3004, 3006–3008...');
 
   while (Date.now() - start < TIMEOUT_MS) {
     const checks = await Promise.all(

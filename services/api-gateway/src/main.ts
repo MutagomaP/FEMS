@@ -76,7 +76,6 @@ async function bootstrap() {
     'NOTIFICATION_SERVICE_URL',
     'http://localhost:3004',
   );
-  const renewalUrl = config.get('RENEWAL_SERVICE_URL', 'http://localhost:3005');
   const complianceUrl = config.get(
     'COMPLIANCE_SERVICE_URL',
     'http://localhost:3006',
@@ -90,11 +89,12 @@ async function bootstrap() {
   const routeMap: { prefix: string; target: string }[] = [
     { prefix: '/api/auth', target: authUrl },
     { prefix: '/api/users', target: authUrl },
+    { prefix: '/api/audit-logs', target: authUrl },
     { prefix: '/api/customers', target: customerUrl },
     { prefix: '/api/extinguishers', target: extinguisherUrl },
+    { prefix: '/api/extinguisher-audit-logs', target: extinguisherUrl },
     { prefix: '/api/notifications', target: notificationUrl },
     { prefix: '/api/settings', target: notificationUrl },
-    { prefix: '/api/renewals', target: renewalUrl },
     { prefix: '/api/compliance', target: complianceUrl },
     { prefix: '/api/reports', target: reportUrl },
     { prefix: '/api/inspections', target: inspectionUrl },

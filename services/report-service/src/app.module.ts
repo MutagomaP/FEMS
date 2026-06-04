@@ -8,7 +8,6 @@ import { CustomerClient } from './clients/customer.client';
 import { ExtinguisherClient } from './clients/extinguisher.client';
 import { NotificationClient } from './clients/notification.client';
 import { InspectionClient } from './clients/inspection.client';
-import { RenewalClient } from './clients/renewal.client';
 import { ExportService } from './reports/export.service';
 import { ReportsController } from './reports/reports.controller';
 import { ReportsService } from './reports/reports.service';
@@ -27,7 +26,6 @@ import { ReportsService } from './reports/reports.service';
     CustomerClient,
     NotificationClient,
     ComplianceClient,
-    RenewalClient,
     InspectionClient,
     JwtPayloadStrategy,
   ],

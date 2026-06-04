@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { HttpModule } from '@nestjs/axios';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuditModule } from '../audit/audit.module';
-import { CustomerClient } from '../clients/customer.client';
+import { ClientsModule } from '../clients/clients.module';
 import { MailModule } from '../mail/mail.module';
 import { PasswordResetToken } from '../entities/password-reset-token.entity';
 import { RefreshToken } from '../entities/refresh-token.entity';
@@ -18,7 +17,7 @@ import { PasswordResetService } from './password-reset.service';
 
 @Module({
   imports: [
-    HttpModule,
+    ClientsModule,
     MailModule,
     UsersModule,
     AuditModule,
@@ -40,7 +39,6 @@ import { PasswordResetService } from './password-reset.service';
     AuthService,
     PasswordResetService,
     JwtStrategy,
-    CustomerClient,
   ],
   exports: [AuthService, JwtModule],
 })

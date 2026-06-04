@@ -11,6 +11,7 @@ import { validateLocation, validateRequired } from '@/utils/validation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   deleteCustomer,
+  createCustomer,
   fetchCustomers,
   updateCustomer,
 } from '@/store/slices/customerSlice';
@@ -43,6 +44,19 @@ export function CustomersPage() {
   useEffect(() => {
     dispatch(fetchCustomers({ page, limit: 10, search: search || undefined }));
   }, [dispatch, page, search]);
+
+  const openCreate = () => {
+    setEditing(null);
+    setForm({
+      fullName: '',
+      nationalId: '',
+      phone: '',
+      email: '',
+      address: '',
+    });
+    setFieldErrors({});
+    setModalOpen(true);
+  };
 
   const openEdit = (customer: Customer) => {
     setEditing(customer);
@@ -109,13 +123,17 @@ export function CustomersPage() {
   };
 
   const handleSave = async () => {
-    if (!editing) return;
-
     const errors = validateCustomerForm(form);
     setFieldErrors(errors);
     if (Object.keys(errors).length) return;
 
-    await dispatch(updateCustomer({ id: editing.id, payload: form }));
+    if (editing) {
+      await dispatch(updateCustomer({ id: editing.id, payload: form }));
+    } else {
+      const result = await dispatch(createCustomer(form));
+      if (createCustomer.rejected.match(result)) return;
+    }
+
     setModalOpen(false);
     dispatch(fetchCustomers({ page, limit: 10, search: search || undefined }));
   };
@@ -153,7 +171,8 @@ export function CustomersPage() {
     <div className="page-container">
       <PageHeader
         title="Customers"
-        description="View and manage customers who registered through the portal. New customers sign up via Register."
+        description="View all customer profiles — self-registered via the portal or created by an admin."
+        action={<Button onClick={openCreate}>Add customer</Button>}
       />
 
       <div className="mb-4 max-w-md">
@@ -234,7 +253,7 @@ export function CustomersPage() {
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title="Edit Customer"
+        title={editing ? 'Edit Customer' : 'Add Customer'}
         footer={
           <div className="flex justify-end gap-2 border-t border-slate-100 px-5 py-4 dark:border-slate-800">
             <Button variant="secondary" onClick={() => setModalOpen(false)}>
@@ -265,7 +284,14 @@ export function CustomersPage() {
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
             error={fieldErrors.phone}
           />
-          <Input label="Email" type="email" value={form.email} disabled />
+          <Input
+            label="Email"
+            type="email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            error={fieldErrors.email}
+            disabled={!!editing}
+          />
           <TextArea
             label="Address"
             value={form.address}

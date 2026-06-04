@@ -54,7 +54,8 @@ export class AuthService {
     });
     void this.welcomeEmailService.sendSelfRegistrationWelcome(
       user.email,
-      user.firstName,
+      user.fullName,
+      user.role,
     );
     return { user, ...tokens };
   }

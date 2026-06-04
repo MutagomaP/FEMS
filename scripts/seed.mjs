@@ -196,14 +196,6 @@ async function seedNotifications(customerIds) {
   console.log('✓ fems_notifications seeded');
 }
 
-async function seedRenewals(customerIds) {
-  const client = await connect('fems_renewals');
-  await requireTable(client, 'fems_renewals', 'renewal_requests');
-  await safeDelete(client, 'renewal_requests');
-  await client.end();
-  console.log('✓ fems_renewals seeded');
-}
-
 async function seedCompliance(customerIds) {
   const client = await connect('fems_compliance');
   await requireTable(client, 'fems_compliance', 'compliance_cases');
@@ -219,7 +211,6 @@ async function main() {
   const extIds = await seedExtinguishers(customerIds);
   await seedInspections(customerIds, extIds);
   await seedNotifications(customerIds);
-  await seedRenewals(customerIds);
   await seedCompliance(customerIds);
   console.log('\nSeed complete!');
   console.log('Admin: admin@fems.local / Admin@123');

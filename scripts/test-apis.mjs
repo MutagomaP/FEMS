@@ -12,7 +12,6 @@ const REQUIRED_PORTS = [
   { port: 3002, name: 'customer-service' },
   { port: 3003, name: 'extinguisher-service' },
   { port: 3004, name: 'notification-service' },
-  { port: 3005, name: 'renewal-service' },
   { port: 3006, name: 'compliance-service' },
   { port: 3007, name: 'report-service' },
   { port: 3008, name: 'inspection-maintenance-service' },
@@ -227,27 +226,6 @@ async function main() {
     });
   }
 
-  // Renewals
-  const renewals = await request('GET', '/renewals?page=1&limit=10', {
-    label: 'GET renewals (admin)',
-    token: adminToken,
-    expectStatus: 200,
-  });
-  await request('GET', '/renewals/mine', {
-    label: 'GET renewals/mine (customer)',
-    token: customerToken,
-    expectStatus: 200,
-  });
-
-  const renewalId = renewals?.data?.data?.[0]?.id;
-  if (renewalId) {
-    await request('GET', `/renewals/${renewalId}`, {
-      label: 'GET renewal by id',
-      token: adminToken,
-      expectStatus: 200,
-    });
-  }
-
   // Compliance
   const cases = await request('GET', '/compliance/cases?page=1&limit=10', {
     label: 'GET compliance cases (admin)',
@@ -326,7 +304,6 @@ async function main() {
     'expired-extinguishers',
     'expiring-soon',
     'customer-compliance',
-    'renewal-requests',
     'notifications',
   ]) {
     await request('GET', `/reports/${report}?format=csv`, {
